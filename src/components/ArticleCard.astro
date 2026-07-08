@@ -1,0 +1,57 @@
+---
+import ImagePlaceholder from "@/components/ImagePlaceholder.astro";
+import type { ArticleRecord } from "@/data/articles";
+
+const { article } = Astro.props as { article: ArticleRecord };
+---
+
+<article class="card article-card">
+  <ImagePlaceholder label={article.category} alt={`Thumbnail placeholder for ${article.title}`} />
+  <div class="card-pad">
+    <p class="eyebrow">{article.category}</p>
+    <h3>{article.title}</h3>
+    <p class="meta">{article.authors} / {article.year}</p>
+    <p class="citation">{article.citation}</p>
+    <p>{article.summary}</p>
+    <div class="actions">
+      {article.pdfUrl ? <a class="button secondary" href={article.pdfUrl}>PDF</a> : null}
+      {article.externalUrl ? <a class="button secondary" href={article.externalUrl}>External URL</a> : null}
+    </div>
+  </div>
+</article>
+
+<style>
+  .article-card {
+    display: grid;
+    grid-template-columns: 230px minmax(0, 1fr);
+    overflow: hidden;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.22rem;
+  }
+
+  .meta,
+  .citation {
+    color: var(--color-earth-dark);
+    font-weight: 750;
+  }
+
+  p:not(.eyebrow, .meta, .citation) {
+    color: var(--color-muted);
+    line-height: 1.65;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  @media (max-width: 760px) {
+    .article-card {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import { projects } from "@/data/projects";
+
+const categories = ["Research", "Conservation", "Human Resource Development"] as const;
+---
+
+<BaseLayout title="Project" description="Project framework page for research, conservation, and human resource development.">
+  <PageHeader
+    eyebrow="Project"
+    title="Project Framework"
+    description="Demo / Placeholder: replace the project records with verified information in the data file."
+    breadcrumbs={[{ label: "Project" }]}
+  />
+
+  {categories.map((category) => (
+    <section class="section">
+      <div class="container">
+        <SectionHeading
+          eyebrow="Project Area"
+          title={category}
+          description="Project cards use one shared template with title, period, summary, thumbnail, organizations, outputs, and external link fields."
+        />
+        <div class="grid grid-3 card-row">
+          {projects.filter((project) => project.category === category).map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+</BaseLayout>
+
+<style>
+  .section:nth-of-type(odd) {
+    background: rgba(255, 255, 255, 0.48);
+  }
+
+  .card-row {
+    margin-top: 28px;
+  }
+</style>

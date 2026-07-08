@@ -1,0 +1,117 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import EmptyState from "@/components/EmptyState.astro";
+import { projectHistory, members, organizations } from "@/data/about";
+---
+
+<BaseLayout title="About" description="About page framework for introduction, history, members, organizations, and contact.">
+  <PageHeader
+    eyebrow="About"
+    title="Project Information"
+    description="Demo / Placeholder: replace these sections with verified project history, members, organizations, and contact information."
+    breadcrumbs={[{ label: "About" }]}
+  />
+
+  <section class="section">
+    <div class="container grid grid-2">
+      <SectionHeading
+        eyebrow="Basic Introduction"
+        title="Content pending"
+        description="Placeholder introduction for the website, documentation project, and future external systems."
+      />
+      <EmptyState
+        title="No verified introduction added yet"
+        description="Add approved text in the data or page content after project confirmation."
+      />
+    </div>
+  </section>
+
+  <section class="section about-band">
+    <div class="container">
+      <SectionHeading eyebrow="Project History" title="History placeholder" />
+      <div class="grid grid-2 card-row">
+        {projectHistory.map((item) => (
+          <article class="card card-pad">
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Members"
+        title="Member list placeholder"
+        description="Do not add real personal information until verified and approved."
+      />
+      <div class="grid grid-3 card-row">
+        {members.map((member) => (
+          <article class="card card-pad">
+            <h3>{member.name}</h3>
+            <p class="role">{member.role}</p>
+            <p>{member.affiliation}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section about-band">
+    <div class="container grid grid-2">
+      <div>
+        <SectionHeading eyebrow="Participating Organizations" title="Organization placeholders" />
+        <div class="card-list">
+          {organizations.map((organization) => (
+            <article class="card card-pad">
+              <h3>{organization.name}</h3>
+              <p>{organization.description}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+      <div>
+        <SectionHeading eyebrow="Contact" title="Content pending" />
+        <EmptyState
+          title="Contact information pending"
+          description="Add verified public contact information only after approval."
+        />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-band {
+    border-block: 1px solid var(--color-line);
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .card-row,
+  .card-list {
+    margin-top: 28px;
+  }
+
+  .card-list {
+    display: grid;
+    gap: 16px;
+  }
+
+  h3 {
+    margin-top: 0;
+  }
+
+  p {
+    color: var(--color-muted);
+    line-height: 1.65;
+  }
+
+  .role {
+    color: var(--color-earth-dark);
+    font-weight: 800;
+  }
+</style>

@@ -1,0 +1,35 @@
+---
+import Breadcrumb from "@/components/Breadcrumb.astro";
+
+const { eyebrow, title, description, breadcrumbs = [] } = Astro.props;
+---
+
+<section class="page-header">
+  <div class="container">
+    <Breadcrumb items={breadcrumbs} />
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    {description && <p class="lead">{description}</p>}
+  </div>
+</section>
+
+<style>
+  .page-header {
+    border-bottom: 1px solid var(--color-line);
+    background:
+      linear-gradient(90deg, rgba(82, 107, 84, 0.08), transparent),
+      rgba(255, 255, 255, 0.58);
+    padding: 42px 0;
+  }
+
+  .eyebrow {
+    margin-top: 28px;
+  }
+
+  h1 {
+    max-width: 900px;
+    margin: 0;
+    font-size: clamp(2.1rem, 5vw, 4.2rem);
+    line-height: 1.04;
+  }
+</style>

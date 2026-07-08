@@ -1,0 +1,76 @@
+---
+import { navigationItems } from "@/config/navigation";
+import { siteInfo } from "@/config/site";
+import { withBase } from "@/utils/paths";
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p class="eyebrow">Academic Website Framework</p>
+      <h2>{siteInfo.name}</h2>
+      <p>
+        Demo / Placeholder: first-stage layout prepared for future Story, map,
+        monument inventory, collection, publication, and external system integration.
+      </p>
+    </div>
+    <nav aria-label="Footer navigation" class="footer-nav">
+      {navigationItems.map((item) => <a href={withBase(item.href)}>{item.label}</a>)}
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    background: #26312c;
+    color: #f7f5ef;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 32px;
+    padding-block: 44px;
+  }
+
+  h2 {
+    margin: 0;
+    max-width: 650px;
+    font-size: clamp(1.45rem, 3vw, 2.1rem);
+  }
+
+  p {
+    max-width: 680px;
+    color: rgba(247, 245, 239, 0.78);
+    line-height: 1.7;
+  }
+
+  .eyebrow {
+    color: #d9c6ae;
+  }
+
+  .footer-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    gap: 10px;
+  }
+
+  .footer-nav a {
+    color: rgba(247, 245, 239, 0.82);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .footer-nav a:hover {
+    color: #ffffff;
+  }
+
+  @media (max-width: 760px) {
+    .footer-grid,
+    .footer-nav {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

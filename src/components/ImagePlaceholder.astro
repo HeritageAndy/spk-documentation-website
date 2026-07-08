@@ -1,0 +1,22 @@
+---
+const { label = "Image placeholder", alt = "Placeholder image area" } = Astro.props;
+---
+
+<div class="placeholder image-placeholder" role="img" aria-label={alt}>
+  <span>
+    <strong>{label}</strong>
+    <small>Demo / Placeholder image area</small>
+  </span>
+</div>
+
+<style>
+  .image-placeholder {
+    aspect-ratio: 16 / 10;
+    min-height: 160px;
+  }
+
+  small {
+    display: block;
+    margin-top: 6px;
+  }
+</style>

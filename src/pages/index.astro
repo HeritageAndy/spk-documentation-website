@@ -1,0 +1,217 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import ImagePlaceholder from "@/components/ImagePlaceholder.astro";
+import { featuredContent, latestReports } from "@/data/home";
+import { siteInfo } from "@/config/site";
+import { withBase } from "@/utils/paths";
+---
+
+<BaseLayout title="Home" description={siteInfo.description}>
+  <section class="home-hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Demo / Placeholder Academic Framework</p>
+        <h1>{siteInfo.name}</h1>
+        <p>
+          Placeholder introduction: this first-stage website framework will present
+          digital documentation, research, conservation, and related outputs for
+          Sambor Prei Kuk after verified content and team systems are connected.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href={withBase("/story")}>Explore the Story</a>
+          <a class="button secondary" href={withBase("/digital-archives")}>Explore the Digital Archives</a>
+        </div>
+      </div>
+      <ImagePlaceholder label="Homepage main visual" alt="Homepage main visual placeholder" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2 entry-grid">
+      <article class="entry-card story-entry">
+        <p class="eyebrow">Guided Browsing</p>
+        <h2>Story</h2>
+        <p>
+          Placeholder: a structured route for visitors to follow future historical,
+          architectural, urban, religious, research, and conservation narratives.
+        </p>
+        <a class="button" href={withBase("/story")}>Explore the Story</a>
+      </article>
+      <article class="entry-card archive-entry">
+        <p class="eyebrow">Map and Archive Exploration</p>
+        <h2>Digital Archives</h2>
+        <p>
+          Placeholder: an archive gateway prepared for future maps, monument pages,
+          thematic collections, databases, and digital documentation outputs.
+        </p>
+        <a class="button" href={withBase("/digital-archives")}>Explore the Digital Archives</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section project-band">
+    <div class="container grid grid-2">
+      <SectionHeading
+        eyebrow="Project"
+        title="Research, conservation, and capacity building"
+        description="Content pending: this section will introduce the project scope after verified text is provided."
+      />
+      <div class="card card-pad">
+        <h3>Project introduction placeholder</h3>
+        <p class="muted">
+          Demo content only. Future updates should be made in data and configuration
+          files where possible, not by rewriting page templates.
+        </p>
+        <a class="button secondary" href={withBase("/project")}>View Project Framework</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Featured Content"
+        title="Archive and research highlights"
+        description="Demo cards for future featured documentation, maps, images, reports, and Story chapters."
+      />
+      <div class="grid grid-3 card-row">
+        {featuredContent.map((item) => (
+          <article class="card card-pad">
+            <p class="eyebrow">{item.type}</p>
+            <h3>{item.title}</h3>
+            <p class="muted">{item.summary}</p>
+            <a class="button secondary" href={withBase(item.href)}>View</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section report-band">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Latest Articles / Reports"
+        title="Recent outputs placeholder"
+        description="Demo records only. Replace with verified publication and report information."
+      />
+      <div class="grid grid-2 card-row">
+        {latestReports.map((item) => (
+          <article class="card card-pad">
+            <p class="eyebrow">{item.date}</p>
+            <h3>{item.title}</h3>
+            <p class="muted">{item.summary}</p>
+            <a class="button secondary" href={withBase(item.href)}>View Articles / Reports</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2">
+      <article class="card card-pad">
+        <p class="eyebrow">Project History</p>
+        <h2>Content pending</h2>
+        <p class="muted">Placeholder for verified project history.</p>
+      </article>
+      <article class="card card-pad">
+        <p class="eyebrow">Members</p>
+        <h2>Content pending</h2>
+        <p class="muted">Placeholder for verified member and organization information.</p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .home-hero {
+    border-bottom: 1px solid var(--color-line);
+    background:
+      linear-gradient(90deg, rgba(82, 107, 84, 0.14), transparent 50%),
+      rgba(255, 255, 255, 0.58);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+    gap: 36px;
+    align-items: center;
+    min-height: 620px;
+    padding-block: 52px;
+  }
+
+  h1 {
+    max-width: 840px;
+    margin: 0;
+    font-size: clamp(2.6rem, 7vw, 5.6rem);
+    line-height: 0.98;
+  }
+
+  .hero-copy p:not(.eyebrow) {
+    max-width: 720px;
+    color: var(--color-muted);
+    font-size: 1.1rem;
+    line-height: 1.75;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .entry-card {
+    min-height: 320px;
+    border-radius: var(--radius);
+    padding: 30px;
+    color: white;
+  }
+
+  .story-entry {
+    background:
+      linear-gradient(135deg, rgba(38, 49, 44, 0.92), rgba(93, 61, 45, 0.9)),
+      #26312c;
+  }
+
+  .archive-entry {
+    background:
+      linear-gradient(135deg, rgba(73, 111, 130, 0.94), rgba(82, 107, 84, 0.92)),
+      #496f82;
+  }
+
+  .entry-card .eyebrow,
+  .entry-card p {
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .entry-card h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.1rem);
+  }
+
+  .entry-card .button {
+    margin-top: 18px;
+    border-color: white;
+    background: white;
+    color: var(--color-ink);
+  }
+
+  .project-band,
+  .report-band {
+    border-block: 1px solid var(--color-line);
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .card-row {
+    margin-top: 28px;
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+  }
+</style>

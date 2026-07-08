@@ -1,0 +1,182 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import ImagePlaceholder from "@/components/ImagePlaceholder.astro";
+import EmptyState from "@/components/EmptyState.astro";
+import ExternalSystemPlaceholder from "@/components/ExternalSystemPlaceholder.astro";
+import { monuments } from "@/data/monuments";
+import { externalSystems } from "@/config/externalSystems";
+
+export function getStaticPaths() {
+  return monuments.map((monument) => ({
+    params: { id: monument.id },
+    props: { monument }
+  }));
+}
+
+const { monument } = Astro.props;
+
+const modules = [
+  "Basic Information",
+  "Location",
+  "Description",
+  "Image Gallery",
+  "Drawings",
+  "3D Models",
+  "Risk Parts",
+  "Flying Palace",
+  "Archaeological Works",
+  "Related Publications"
+];
+---
+
+<BaseLayout title={monument.name} description={`Site page template for ${monument.name}.`}>
+  <PageHeader
+    eyebrow="Site Page Template"
+    title={monument.name}
+    description="Demo / Placeholder: this reusable page is generated from monument data. Replace the data record with verified content when available."
+    breadcrumbs={[
+      { label: "Digital Archives", href: "/digital-archives" },
+      { label: monument.name }
+    ]}
+  />
+
+  <section class="section">
+    <div class="container site-layout">
+      <aside class="card card-pad module-nav" aria-label="Site page modules">
+        <p class="eyebrow">{monument.id}</p>
+        <h2>Modules</h2>
+        {modules.map((module) => <a href={`#${module.toLowerCase().replaceAll(" ", "-")}`}>{module}</a>)}
+      </aside>
+
+      <div class="module-stack">
+        <section class="card card-pad" id="basic-information">
+          <SectionHeading eyebrow="Module" title="Basic Information" />
+          <dl class="info-list">
+            <dt>Monument ID</dt>
+            <dd>{monument.id}</dd>
+            <dt>Monument Name</dt>
+            <dd>{monument.name}</dd>
+            <dt>Zone</dt>
+            <dd>{monument.zone}</dd>
+            <dt>Status</dt>
+            <dd>Demo / Placeholder / Content pending</dd>
+          </dl>
+        </section>
+
+        <section class="card card-pad" id="location">
+          <SectionHeading eyebrow="Module" title="Location" />
+          <ImagePlaceholder label="Location map placeholder" alt="Location map placeholder" />
+        </section>
+
+        <section class="card card-pad" id="description">
+          <SectionHeading eyebrow="Module" title="Description" />
+          <p class="muted">{monument.shortDescription}</p>
+        </section>
+
+        <section class="card card-pad" id="image-gallery">
+          <SectionHeading eyebrow="Module" title="Image Gallery" />
+          <div class="grid grid-3">
+            <ImagePlaceholder label="Gallery image placeholder" alt="Gallery image placeholder" />
+            <ImagePlaceholder label="Gallery image placeholder" alt="Gallery image placeholder" />
+            <ImagePlaceholder label="Gallery image placeholder" alt="Gallery image placeholder" />
+          </div>
+        </section>
+
+        <section class="card card-pad" id="drawings">
+          <SectionHeading eyebrow="Module" title="Drawings" />
+          <EmptyState title="Drawings under preparation" description="Content pending: plans, elevations, sections, and measured drawings can be added later." />
+        </section>
+
+        <section class="card card-pad" id="3d-models">
+          <SectionHeading eyebrow="Module" title="3D Models" />
+          <ExternalSystemPlaceholder system={externalSystems.threeDModel} previewLabel="3D model preview placeholder" />
+        </section>
+
+        <section class="card card-pad" id="risk-parts">
+          <SectionHeading eyebrow="Module" title="Risk Parts" />
+          <EmptyState title="Risk documentation pending" description="Placeholder for future condition, risk, and conservation records." />
+        </section>
+
+        <section class="card card-pad" id="flying-palace">
+          <SectionHeading eyebrow="Module" title="Flying Palace" />
+          <EmptyState title="Flying Palace records pending" description="Placeholder for future related records and visual documentation." />
+        </section>
+
+        <section class="card card-pad" id="archaeological-works">
+          <SectionHeading eyebrow="Module" title="Archaeological Works" />
+          <EmptyState title="Archaeological records pending" description="Placeholder for future survey, excavation, or documentation records." />
+        </section>
+
+        <section class="card card-pad" id="related-publications">
+          <SectionHeading eyebrow="Module" title="Related Publications" />
+          <EmptyState title="Related publications pending" description="Placeholder for future verified publications and reports." />
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .site-layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .module-nav {
+    position: sticky;
+    top: 100px;
+  }
+
+  .module-nav h2 {
+    margin-top: 0;
+  }
+
+  .module-nav a {
+    display: block;
+    border-top: 1px solid var(--color-line);
+    padding: 11px 0;
+    color: var(--color-earth-dark);
+    font-weight: 750;
+    text-decoration: none;
+  }
+
+  .module-stack {
+    display: grid;
+    gap: 20px;
+  }
+
+  .info-list {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 12px 18px;
+    margin-top: 22px;
+  }
+
+  dt {
+    color: var(--color-ink);
+    font-weight: 850;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--color-muted);
+  }
+
+  @media (max-width: 900px) {
+    .site-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .module-nav {
+      position: static;
+    }
+
+    .info-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

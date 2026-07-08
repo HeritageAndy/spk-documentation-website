@@ -1,0 +1,62 @@
+---
+import ImagePlaceholder from "@/components/ImagePlaceholder.astro";
+import type { ProjectRecord } from "@/data/projects";
+
+const { project } = Astro.props as { project: ProjectRecord };
+---
+
+<article class="card card-pad project-card">
+  <ImagePlaceholder label={project.title} alt={`Thumbnail placeholder for ${project.title}`} />
+  <div>
+    <p class="eyebrow">{project.category}</p>
+    <h3>{project.title}</h3>
+    <p class="period">{project.period}</p>
+    <p>{project.summary}</p>
+    <dl>
+      <dt>Participating Organizations</dt>
+      <dd>{project.participatingOrganizations.join(", ")}</dd>
+      <dt>Related Outputs</dt>
+      <dd>{project.relatedOutputs.join(", ")}</dd>
+    </dl>
+    {project.externalLink ? <a class="button secondary" href={project.externalLink}>External link</a> : null}
+  </div>
+</article>
+
+<style>
+  .project-card {
+    display: grid;
+    gap: 18px;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.35rem;
+  }
+
+  .period {
+    margin: 8px 0;
+    color: var(--color-earth-dark);
+    font-weight: 800;
+  }
+
+  p:not(.period, .eyebrow),
+  dd {
+    color: var(--color-muted);
+    line-height: 1.65;
+  }
+
+  dl {
+    display: grid;
+    gap: 5px;
+    margin: 16px 0 0;
+  }
+
+  dt {
+    color: var(--color-ink);
+    font-weight: 800;
+  }
+
+  dd {
+    margin: 0 0 8px;
+  }
+</style>

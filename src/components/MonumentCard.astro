@@ -1,0 +1,49 @@
+---
+import ImagePlaceholder from "@/components/ImagePlaceholder.astro";
+import type { MonumentRecord } from "@/data/monuments";
+import { withBase } from "@/utils/paths";
+
+const { monument } = Astro.props as { monument: MonumentRecord };
+---
+
+<article class="card monument-card">
+  <ImagePlaceholder label={monument.id} alt={`Thumbnail placeholder for ${monument.name}`} />
+  <div class="card-pad">
+    <p class="eyebrow">{monument.id}</p>
+    <h3>{monument.name}</h3>
+    <p class="zone">{monument.zone}</p>
+    <p>{monument.shortDescription}</p>
+    <div class="tags">
+      {monument.tags.map((tag) => <span class="tag">{tag}</span>)}
+    </div>
+    <a class="button secondary" href={withBase(`/digital-archives/sites/${monument.id}`)}>View Site Page</a>
+  </div>
+</article>
+
+<style>
+  .monument-card {
+    overflow: hidden;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .zone {
+    color: var(--color-earth-dark);
+    font-weight: 800;
+  }
+
+  p:not(.eyebrow, .zone) {
+    color: var(--color-muted);
+    line-height: 1.65;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 20px;
+  }
+</style>

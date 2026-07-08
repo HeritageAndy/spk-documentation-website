@@ -1,0 +1,37 @@
+---
+import { withBase } from "@/utils/paths";
+
+type Crumb = {
+  label: string;
+  href?: string;
+};
+
+const { items = [] } = Astro.props as { items: Crumb[] };
+---
+
+<nav aria-label="Breadcrumb" class="breadcrumb">
+  <a href={withBase("/")}>Home</a>
+  {items.map((item) => (
+    <>
+      <span aria-hidden="true">/</span>
+      {item.href ? <a href={withBase(item.href)}>{item.label}</a> : <span>{item.label}</span>}
+    </>
+  ))}
+</nav>
+
+<style>
+  .breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    color: var(--color-muted);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .breadcrumb a {
+    color: var(--color-earth-dark);
+    text-decoration: none;
+  }
+</style>

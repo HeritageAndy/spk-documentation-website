@@ -1,0 +1,79 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import ExternalSystemPlaceholder from "@/components/ExternalSystemPlaceholder.astro";
+import { storySections } from "@/data/story";
+import { externalSystems } from "@/config/externalSystems";
+---
+
+<BaseLayout title="Story" description="Story page framework for future guided browsing and Cesium Stories integration.">
+  <PageHeader
+    eyebrow="Story"
+    title="Guided Story Framework"
+    description="Demo / Placeholder: future Cesium Stories and guided chapters will be connected here after verified content is prepared."
+    breadcrumbs={[{ label: "Story" }]}
+  />
+
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Chapter Navigation"
+        title="Future guided sequence"
+        description="Each chapter card is a layout placeholder only. No unverified academic content has been added."
+      />
+      <div class="grid grid-4 chapter-grid">
+        {storySections.map((section, index) => (
+          <article class="card card-pad chapter-card">
+            <span class="chapter-number">{String(index + 1).padStart(2, "0")}</span>
+            <h2>{section.title}</h2>
+            <p>{section.summary}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section story-system">
+    <div class="container">
+      <ExternalSystemPlaceholder
+        system={externalSystems.cesiumStory}
+        previewLabel="Preview image placeholder"
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .chapter-grid {
+    margin-top: 28px;
+  }
+
+  .chapter-card {
+    min-height: 280px;
+  }
+
+  .chapter-number {
+    display: inline-flex;
+    margin-bottom: 20px;
+    color: var(--color-river);
+    font-size: 0.9rem;
+    font-weight: 900;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.25;
+  }
+
+  p {
+    color: var(--color-muted);
+    line-height: 1.65;
+  }
+
+  .story-system {
+    border-top: 1px solid var(--color-line);
+    background: rgba(255, 255, 255, 0.5);
+  }
+</style>

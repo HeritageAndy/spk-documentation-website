@@ -1,0 +1,85 @@
+---
+import type { ExternalSystem } from "@/config/externalSystems";
+
+const { system, previewLabel = "Preview image placeholder" } = Astro.props as {
+  system: ExternalSystem;
+  previewLabel?: string;
+};
+
+const canOpen = system.mode !== "disabled" && Boolean(system.url);
+---
+
+<div class="external-system card">
+  <div class="preview placeholder">
+    <span>
+      <strong>{previewLabel}</strong>
+      <small>{system.label}</small>
+    </span>
+  </div>
+  <div class="content">
+    <p class="eyebrow">External System Placeholder</p>
+    <h2>{system.label}</h2>
+    <p>{system.description}</p>
+    {system.mode === "iframe" && system.url ? (
+      <iframe title={system.label} src={system.url} loading="lazy"></iframe>
+    ) : null}
+    <div class="actions">
+      {canOpen ? (
+        <a class="button" href={system.url} target="_blank" rel="noreferrer">{system.buttonLabel}</a>
+      ) : (
+        <span class="button disabled" aria-disabled="true">Under preparation</span>
+      )}
+    </div>
+  </div>
+</div>
+
+<style>
+  .external-system {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.1fr);
+    overflow: hidden;
+  }
+
+  .preview {
+    min-height: 300px;
+    border-width: 0 1px 0 0;
+    border-radius: 0;
+  }
+
+  .content {
+    padding: 28px;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+  }
+
+  p:not(.eyebrow) {
+    color: var(--color-muted);
+    line-height: 1.7;
+  }
+
+  iframe {
+    width: 100%;
+    min-height: 320px;
+    margin-top: 18px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: white;
+  }
+
+  .actions {
+    margin-top: 20px;
+  }
+
+  @media (max-width: 820px) {
+    .external-system {
+      grid-template-columns: 1fr;
+    }
+
+    .preview {
+      border-width: 0 0 1px;
+    }
+  }
+</style>

@@ -1,0 +1,151 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import ExternalSystemPlaceholder from "@/components/ExternalSystemPlaceholder.astro";
+import ImagePlaceholder from "@/components/ImagePlaceholder.astro";
+import MonumentCard from "@/components/MonumentCard.astro";
+import EmptyState from "@/components/EmptyState.astro";
+import { externalSystems } from "@/config/externalSystems";
+import { monuments } from "@/data/monuments";
+import { thematicCollections } from "@/data/collections";
+import { withBase } from "@/utils/paths";
+---
+
+<BaseLayout title="Digital Archives" description="Digital Archives framework with map, monument inventory, collections, and search placeholders.">
+  <PageHeader
+    eyebrow="Digital Archives"
+    title="Map, Monument, and Collection Framework"
+    description="Demo / Placeholder: this page prepares replaceable areas for future GIS maps, monument inventory, thematic collections, search, and external systems."
+    breadcrumbs={[{ label: "Digital Archives" }]}
+  />
+
+  <section class="section-tight archive-jump">
+    <div class="container grid grid-4">
+      <a class="jump-card" href="#interactive-map">Interactive Map</a>
+      <a class="jump-card" href="#monument-inventory">Monument Inventory</a>
+      <a class="jump-card" href="#thematic-collections">Thematic Collections</a>
+      <a class="jump-card" href="#search-placeholder">Search Placeholder</a>
+    </div>
+  </section>
+
+  <section class="section" id="interactive-map">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Interactive Map"
+        title="Future map integration area"
+        description="This area can later be replaced by an external page link, iframe embed, QGIS2web static page, or Leaflet page through the external systems configuration."
+      />
+      <div class="map-note">Map developed by project team: content pending.</div>
+      <div class="system-wrap">
+        <ExternalSystemPlaceholder
+          system={externalSystems.interactiveMap}
+          previewLabel="Map cover or placeholder image"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section inventory-band" id="monument-inventory">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Monument Inventory"
+        title="Reusable monument card template"
+        description="Demo records only. Future verified content should be edited in the monument data file, not by duplicating full pages."
+      />
+      <div class="grid grid-4 card-row">
+        {monuments.map((monument) => <MonumentCard monument={monument} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="thematic-collections">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Thematic Collections"
+        title="Collection entry points"
+        description="Each card can later link to an internal page, external team system, or embedded iframe controlled by configuration."
+      />
+      <div class="grid grid-4 card-row">
+        {thematicCollections.map((collection) => (
+          <article class="card collection-card">
+            <ImagePlaceholder label={collection.title} alt={`Cover placeholder for ${collection.title}`} />
+            <div class="card-pad">
+              <h3>{collection.title}</h3>
+              <p>{collection.summary}</p>
+              <a class="button secondary" href={withBase(collection.internalHref)}>View Collection</a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section search-band" id="search-placeholder">
+    <div class="container grid grid-2">
+      <SectionHeading
+        eyebrow="Search"
+        title="Future search system connection"
+        description="No artifact search system is developed in this phase. This placeholder will later connect to the team database or external retrieval system."
+      />
+      <EmptyState
+        title="Search under preparation"
+        description="Content pending: the future search system can be linked or embedded through the external system configuration."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .archive-jump {
+    border-bottom: 1px solid var(--color-line);
+    background: rgba(255, 255, 255, 0.55);
+  }
+
+  .jump-card {
+    display: flex;
+    align-items: center;
+    min-height: 76px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: white;
+    padding: 18px;
+    color: var(--color-earth-dark);
+    font-weight: 850;
+    text-decoration: none;
+  }
+
+  .jump-card:hover {
+    border-color: var(--color-earth);
+  }
+
+  .map-note {
+    margin: 20px 0 12px;
+    color: var(--color-muted);
+    font-weight: 700;
+  }
+
+  .system-wrap,
+  .card-row {
+    margin-top: 28px;
+  }
+
+  .inventory-band,
+  .search-band {
+    border-block: 1px solid var(--color-line);
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .collection-card {
+    overflow: hidden;
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  .collection-card p {
+    color: var(--color-muted);
+    line-height: 1.65;
+  }
+</style>
