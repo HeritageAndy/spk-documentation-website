@@ -1,29 +1,22 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import SectionHeading from "@/components/SectionHeading.astro";
-import ImagePlaceholder from "@/components/ImagePlaceholder.astro";
-import { featuredContent, latestReports } from "@/data/home";
+import { homepageIntroduction, projectTimeline } from "@/data/home";
 import { siteInfo } from "@/config/site";
 import { withBase } from "@/utils/paths";
 ---
 
 <BaseLayout title="Home" description={siteInfo.description}>
-  <section class="home-hero">
+  <section class="home-hero" style={`--hero-image: url('${withBase("/images/prasat-sambor-n1.jpg")}')`}>
+    <div class="hero-overlay"></div>
     <div class="container hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow">Demo / Placeholder Academic Framework</p>
         <h1>{siteInfo.name}</h1>
-        <p>
-          Placeholder introduction: this first-stage website framework will present
-          digital documentation, research, conservation, and related outputs for
-          Sambor Prei Kuk after verified content and team systems are connected.
-        </p>
+        <p>{homepageIntroduction}</p>
         <div class="hero-actions">
           <a class="button" href={withBase("/story")}>Explore the Story</a>
           <a class="button secondary" href={withBase("/digital-archives")}>Explore the Digital Archives</a>
         </div>
       </div>
-      <ImagePlaceholder label="Homepage main visual" alt="Homepage main visual placeholder" />
     </div>
   </section>
 
@@ -51,74 +44,33 @@ import { withBase } from "@/utils/paths";
   </section>
 
   <section class="section project-band">
-    <div class="container grid grid-2">
-      <SectionHeading
-        eyebrow="Project"
-        title="Research, conservation, and capacity building"
-        description="Content pending: this section will introduce the project scope after verified text is provided."
-      />
-      <div class="card card-pad">
-        <h3>Project introduction placeholder</h3>
-        <p class="muted">
-          Demo content only. Future updates should be made in data and configuration
-          files where possible, not by rewriting page templates.
-        </p>
-        <a class="button secondary" href={withBase("/project")}>View Project Framework</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
     <div class="container">
-      <SectionHeading
-        eyebrow="Featured Content"
-        title="Archive and research highlights"
-        description="Demo cards for future featured documentation, maps, images, reports, and Story chapters."
-      />
-      <div class="grid grid-3 card-row">
-        {featuredContent.map((item) => (
-          <article class="card card-pad">
-            <p class="eyebrow">{item.type}</p>
-            <h3>{item.title}</h3>
-            <p class="muted">{item.summary}</p>
-            <a class="button secondary" href={withBase(item.href)}>View</a>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="section report-band">
-    <div class="container">
-      <SectionHeading
-        eyebrow="Latest Articles / Reports"
-        title="Recent outputs placeholder"
-        description="Demo records only. Replace with verified publication and report information."
-      />
-      <div class="grid grid-2 card-row">
-        {latestReports.map((item) => (
-          <article class="card card-pad">
-            <p class="eyebrow">{item.date}</p>
-            <h3>{item.title}</h3>
-            <p class="muted">{item.summary}</p>
-            <a class="button secondary" href={withBase(item.href)}>View Articles / Reports</a>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container grid grid-2">
-      <article class="card card-pad">
+      <div class="timeline-heading">
         <p class="eyebrow">Project History</p>
-        <h2>Content pending</h2>
-        <p class="muted">Placeholder for verified project history.</p>
-      </article>
-      <article class="card card-pad">
+        <h2>Historical and project timeline</h2>
+      </div>
+      <div class="timeline" aria-label="Project history timeline">
+        {projectTimeline.map((item, index) => (
+          <article class:list={["timeline-item", item.position]}>
+            <div class="timeline-content">
+              <span class="timeline-period">{item.period}</span>
+              <h3>{item.title}</h3>
+              {item.description && <p>{item.description}</p>}
+            </div>
+            <span class:list={["timeline-dot", { short: index === 1, dashed: index === 2 }]}></span>
+          </article>
+        ))}
+      </div>
+      <a class="button secondary timeline-link" href={withBase("/project")}>View Project Framework</a>
+    </div>
+  </section>
+
+  <section class="section members-band">
+    <div class="container">
+      <article class="members-card card card-pad">
         <p class="eyebrow">Members</p>
         <h2>Content pending</h2>
-        <p class="muted">Placeholder for verified member and organization information.</p>
+        <p class="muted">This large section is reserved for the project member text that will be added later.</p>
       </article>
     </div>
   </section>
@@ -126,31 +78,42 @@ import { withBase } from "@/utils/paths";
 
 <style>
   .home-hero {
+    position: relative;
+    min-height: calc(100vh - 76px);
+    overflow: hidden;
     border-bottom: 1px solid var(--color-line);
+    background-image: var(--hero-image);
+    background-position: center;
+    background-size: cover;
+    color: white;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
     background:
-      linear-gradient(90deg, rgba(82, 107, 84, 0.14), transparent 50%),
-      rgba(255, 255, 255, 0.58);
+      linear-gradient(90deg, rgba(18, 24, 21, 0.8), rgba(18, 24, 21, 0.38) 52%, rgba(18, 24, 21, 0.18)),
+      linear-gradient(0deg, rgba(18, 24, 21, 0.84), transparent 48%);
   }
 
   .hero-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
-    gap: 36px;
-    align-items: center;
-    min-height: 620px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: calc(100vh - 76px);
     padding-block: 52px;
   }
 
   h1 {
-    max-width: 840px;
+    max-width: 900px;
     margin: 0;
-    font-size: clamp(2.6rem, 7vw, 5.6rem);
+    font-size: clamp(2.7rem, 7vw, 6rem);
     line-height: 0.98;
   }
 
   .hero-copy p:not(.eyebrow) {
-    max-width: 720px;
-    color: var(--color-muted);
+    max-width: 840px;
+    color: rgba(255, 255, 255, 0.88);
     font-size: 1.1rem;
     line-height: 1.75;
   }
@@ -160,6 +123,11 @@ import { withBase } from "@/utils/paths";
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 28px;
+  }
+
+  .hero-actions .button.secondary {
+    border-color: rgba(255, 255, 255, 0.78);
+    color: white;
   }
 
   .entry-card {
@@ -199,19 +167,129 @@ import { withBase } from "@/utils/paths";
   }
 
   .project-band,
-  .report-band {
+  .members-band {
     border-block: 1px solid var(--color-line);
     background: rgba(255, 255, 255, 0.5);
   }
 
-  .card-row {
-    margin-top: 28px;
+  .timeline-heading {
+    max-width: 760px;
+  }
+
+  .timeline-heading h2 {
+    margin: 0;
+    font-size: clamp(1.7rem, 3vw, 2.6rem);
+  }
+
+  .timeline {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(120px, 1fr));
+    min-height: 360px;
+    margin-top: 44px;
+    overflow-x: auto;
+    padding: 24px 0 30px;
+  }
+
+  .timeline::before {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    background:
+      linear-gradient(90deg, var(--color-earth-dark) 0 13%, transparent 13% 36%, var(--color-line) 36% 100%);
+    content: "";
+  }
+
+  .timeline::after {
+    position: absolute;
+    left: 30%;
+    right: 64%;
+    top: 50%;
+    border-top: 2px dashed var(--color-earth-dark);
+    content: "";
+  }
+
+  .timeline-item {
+    position: relative;
+    min-width: 140px;
+  }
+
+  .timeline-content {
+    position: absolute;
+    left: 0;
+    width: min(220px, 100%);
+    border-left: 2px solid rgba(140, 95, 63, 0.38);
+    padding-left: 14px;
+  }
+
+  .timeline-item.top .timeline-content {
+    bottom: calc(50% + 38px);
+  }
+
+  .timeline-item.bottom .timeline-content {
+    top: calc(50% + 38px);
+  }
+
+  .timeline-period {
+    color: var(--color-earth-dark);
+    font-size: 0.9rem;
+    font-weight: 900;
+  }
+
+  .timeline h3 {
+    margin: 5px 0 0;
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+
+  .timeline p {
+    margin: 8px 0 0;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    transform: translateY(-6px);
+    border: 3px solid white;
+    border-radius: 50%;
+    background: var(--color-earth-dark);
+    box-shadow: 0 0 0 1px rgba(140, 95, 63, 0.35);
+  }
+
+  .timeline-link {
+    margin-top: 10px;
+  }
+
+  .members-card {
+    min-height: 300px;
+    display: grid;
+    align-content: start;
+  }
+
+  .members-card h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.2rem);
   }
 
   @media (max-width: 900px) {
     .hero-grid {
-      grid-template-columns: 1fr;
       min-height: auto;
+    }
+
+    .home-hero {
+      min-height: 680px;
+    }
+
+    .timeline {
+      grid-template-columns: repeat(6, 180px);
     }
   }
 </style>

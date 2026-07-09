@@ -86,6 +86,8 @@ src/data/home.ts
 src/data/projects.ts
 ```
 
+当前 Project 页面中的英文参考内容和图片整理自 Shimoda Laboratory 的 SPK Project 页面。继续修改时，请优先编辑 `projectPageSections`，并保留或更新对应来源链接。
+
 每个项目支持：
 
 - `title`

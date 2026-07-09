@@ -1,33 +1,37 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PageHeader from "@/components/PageHeader.astro";
-import SectionHeading from "@/components/SectionHeading.astro";
-import ProjectCard from "@/components/ProjectCard.astro";
-import { projects } from "@/data/projects";
-
-const categories = ["Research", "Conservation", "Human Resource Development"] as const;
+import { projectPageSections } from "@/data/projects";
+import { withBase } from "@/utils/paths";
 ---
 
 <BaseLayout title="Project" description="Project framework page for research, conservation, and human resource development.">
   <PageHeader
     eyebrow="Project"
-    title="Project Framework"
-    description="Demo / Placeholder: replace the project records with verified information in the data file."
+    title="Research, Conservation, and Human Resource Development"
+    description="English content reorganized from the Shimoda Laboratory SPK project reference pages. Images are stored locally for this website draft, with source links retained."
     breadcrumbs={[{ label: "Project" }]}
   />
 
-  {categories.map((category) => (
-    <section class="section">
+  {projectPageSections.map((section, index) => (
+    <section class:list={["section", "project-section", { alternate: index % 2 === 1 }]}>
       <div class="container">
-        <SectionHeading
-          eyebrow="Project Area"
-          title={category}
-          description="Project cards use one shared template with title, period, summary, thumbnail, organizations, outputs, and external link fields."
-        />
-        <div class="grid grid-3 card-row">
-          {projects.filter((project) => project.category === category).map((project) => (
-            <ProjectCard project={project} />
-          ))}
+        <div class="project-grid">
+          <figure>
+            <img src={withBase(section.image)} alt={section.imageAlt} loading="lazy" />
+            <figcaption>Image source: <a href={section.sourceUrl} target="_blank" rel="noreferrer">{section.sourceLabel}</a></figcaption>
+          </figure>
+          <article class="project-copy">
+            <p class="eyebrow">{section.category}</p>
+            <h2>{section.title}</h2>
+            {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+            <ul>
+              {section.points.map((point) => <li>{point}</li>)}
+            </ul>
+            <a class="button secondary" href={section.sourceUrl} target="_blank" rel="noreferrer">
+              View Source Page
+            </a>
+          </article>
         </div>
       </div>
     </section>
@@ -35,11 +39,83 @@ const categories = ["Research", "Conservation", "Human Resource Development"] as
 </BaseLayout>
 
 <style>
-  .section:nth-of-type(odd) {
+  .project-section.alternate {
     background: rgba(255, 255, 255, 0.48);
   }
 
-  .card-row {
-    margin-top: 28px;
+  .project-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr);
+    gap: 34px;
+    align-items: start;
+  }
+
+  .alternate .project-grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  }
+
+  .alternate figure {
+    order: 2;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    max-height: 520px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    object-fit: cover;
+    box-shadow: var(--shadow-soft);
+  }
+
+  figcaption {
+    margin-top: 10px;
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  figcaption a {
+    color: var(--color-earth-dark);
+    font-weight: 800;
+  }
+
+  .project-copy {
+    border-left: 3px solid rgba(140, 95, 63, 0.35);
+    padding-left: 24px;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(1.8rem, 3vw, 3rem);
+    line-height: 1.08;
+  }
+
+  p,
+  li {
+    color: var(--color-muted);
+    line-height: 1.72;
+  }
+
+  ul {
+    display: grid;
+    gap: 10px;
+    margin: 22px 0;
+    padding-left: 20px;
+  }
+
+  @media (max-width: 860px) {
+    .project-grid,
+    .alternate .project-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .alternate figure {
+      order: 0;
+    }
   }
 </style>

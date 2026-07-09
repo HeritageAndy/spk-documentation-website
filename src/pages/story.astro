@@ -2,9 +2,14 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PageHeader from "@/components/PageHeader.astro";
 import SectionHeading from "@/components/SectionHeading.astro";
-import ExternalSystemPlaceholder from "@/components/ExternalSystemPlaceholder.astro";
 import { storySections } from "@/data/story";
 import { externalSystems } from "@/config/externalSystems";
+
+const storyCards = storySections.map((section) => {
+  const key = section.externalSystemKey as keyof typeof externalSystems | "";
+  const externalSystem = key ? externalSystems[key] : null;
+  return { ...section, externalSystem };
+});
 ---
 
 <BaseLayout title="Story" description="Story page framework for future guided browsing and Cesium Stories integration.">
@@ -18,44 +23,61 @@ import { externalSystems } from "@/config/externalSystems";
   <section class="section">
     <div class="container">
       <SectionHeading
-        eyebrow="Chapter Navigation"
-        title="Future guided sequence"
-        description="Each chapter card is a layout placeholder only. No unverified academic content has been added."
+        eyebrow="Cesium Stories"
+        title="Four guided story sections"
+        description="Each horizontal section is prepared as a direct entry to a future Cesium Story. Available stories open externally; pending stories keep a clear preparation state."
       />
-      <div class="grid grid-4 chapter-grid">
-        {storySections.map((section, index) => (
-          <article class="card card-pad chapter-card">
+      <div class="chapter-list">
+        {storyCards.map((section, index) => (
+          <article class="card chapter-card">
             <span class="chapter-number">{String(index + 1).padStart(2, "0")}</span>
-            <h2>{section.title}</h2>
-            <p>{section.summary}</p>
+            <div>
+              <h2>{section.title}</h2>
+              <p>{section.summary}</p>
+            </div>
+            {section.externalSystem?.url ? (
+              <a
+                class="button"
+                href={section.externalSystem.url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Browse Cesium Story
+              </a>
+            ) : (
+              <span class="button disabled" aria-disabled="true">Under preparation</span>
+            )}
           </article>
         ))}
       </div>
     </div>
   </section>
-
-  <section class="section story-system">
-    <div class="container">
-      <ExternalSystemPlaceholder
-        system={externalSystems.cesiumStory}
-        previewLabel="Preview image placeholder"
-      />
-    </div>
-  </section>
 </BaseLayout>
 
 <style>
-  .chapter-grid {
+  .chapter-list {
+    display: grid;
+    gap: 18px;
     margin-top: 28px;
   }
 
   .chapter-card {
-    min-height: 280px;
+    display: grid;
+    grid-template-columns: 80px minmax(0, 1fr) auto;
+    gap: 22px;
+    align-items: center;
+    min-height: 148px;
+    padding: 24px;
   }
 
   .chapter-number {
-    display: inline-flex;
-    margin-bottom: 20px;
+    display: grid;
+    width: 58px;
+    height: 58px;
+    place-items: center;
+    border: 1px solid rgba(73, 111, 130, 0.3);
+    border-radius: 50%;
+    background: rgba(73, 111, 130, 0.08);
     color: var(--color-river);
     font-size: 0.9rem;
     font-weight: 900;
@@ -72,8 +94,10 @@ import { externalSystems } from "@/config/externalSystems";
     line-height: 1.65;
   }
 
-  .story-system {
-    border-top: 1px solid var(--color-line);
-    background: rgba(255, 255, 255, 0.5);
+  @media (max-width: 760px) {
+    .chapter-card {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
   }
 </style>

@@ -11,9 +11,9 @@ export type ExternalSystem = {
 export const externalSystems = {
   cesiumStory: {
     label: "Cesium Story",
-    mode: "disabled",
-    url: "",
-    description: "Content pending: Cesium Story will be integrated here.",
+    mode: "external-link",
+    url: "https://ion.cesium.com/stories/viewer/?id=da9cb7ff-4267-4b48-a9fc-c1c111f2674c",
+    description: "Cesium Story for the Temple Zone of Sambor Prei Kuk.",
     buttonLabel: "Open Cesium Story"
   },
   interactiveMap: {

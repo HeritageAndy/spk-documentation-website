@@ -1,18 +1,22 @@
 export const storySections = [
   {
     title: "General History in Pre-Angkor",
-    summary: "Placeholder: future guided content will introduce the broader historical context."
+    summary: "Content pending: future Cesium Story content will introduce the broader historical context.",
+    externalSystemKey: ""
   },
   {
     title: "Temple Zone of Sambor Prei Kuk",
-    summary: "Placeholder: future guided content will introduce the temple zone and documentation themes."
+    summary: "Open the Cesium Story for the Temple Zone of Sambor Prei Kuk.",
+    externalSystemKey: "cesiumStory"
   },
   {
     title: "City Complex of Sambor Prei Kuk",
-    summary: "Placeholder: future guided content will introduce the city, landscape, and water-related themes."
+    summary: "Content pending: future Cesium Story content will introduce the city complex and landscape.",
+    externalSystemKey: ""
   },
   {
     title: "Research and Conservation of Sambor Prei Kuk",
-    summary: "Placeholder: future guided content will introduce research, documentation, and conservation work."
+    summary: "Content pending: future Cesium Story content will introduce research and conservation work.",
+    externalSystemKey: ""
   }
 ];

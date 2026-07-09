@@ -1,6 +1,7 @@
 ---
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import { siteInfo } from "@/config/site";
 import "@/styles/global.css";
 
 type Props = {
@@ -9,7 +10,7 @@ type Props = {
 };
 
 const { title, description = "Demo / Placeholder: Sambor Prei Kuk Documentation Website." } = Astro.props;
-const pageTitle = title ? `${title} | Sambor Prei Kuk Documentation Website` : "Sambor Prei Kuk Documentation Website";
+const pageTitle = title ? `${title} | ${siteInfo.name}` : siteInfo.name;
 ---
 
 <!doctype html>
