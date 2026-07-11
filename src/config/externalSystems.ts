@@ -18,9 +18,9 @@ export const externalSystems = {
   },
   interactiveMap: {
     label: "Interactive Map",
-    mode: "disabled",
-    url: "",
-    description: "Content pending: Interactive map will be integrated here.",
+    mode: "iframe",
+    url: "https://tsukuba-heritage.github.io/spk-webgis/#14/12.8720/105.0332",
+    description: "Interactive QGIS web map developed by the project team.",
     buttonLabel: "Open Interactive Map"
   },
   monumentDatabase: {

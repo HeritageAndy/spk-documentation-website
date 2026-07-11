@@ -2,7 +2,6 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PageHeader from "@/components/PageHeader.astro";
 import SectionHeading from "@/components/SectionHeading.astro";
-import ExternalSystemPlaceholder from "@/components/ExternalSystemPlaceholder.astro";
 import ImagePlaceholder from "@/components/ImagePlaceholder.astro";
 import MonumentCard from "@/components/MonumentCard.astro";
 import EmptyState from "@/components/EmptyState.astro";
@@ -33,16 +32,25 @@ import { withBase } from "@/utils/paths";
     <div class="container">
       <SectionHeading
         eyebrow="Interactive Map"
-        title="Future map integration area"
-        description="This area can later be replaced by an external page link, iframe embed, QGIS2web static page, or Leaflet page through the external systems configuration."
+        title="Interactive map gateway"
+        description="The project QGIS web map is available as a dedicated page so the map has enough screen space and the Digital Archives overview remains lightweight."
       />
-      <div class="map-note">Map developed by project team: content pending.</div>
-      <div class="system-wrap">
-        <ExternalSystemPlaceholder
-          system={externalSystems.interactiveMap}
-          previewLabel="Map cover or placeholder image"
-        />
-      </div>
+      <article class="card map-gateway">
+        <div class="map-preview" aria-hidden="true">
+          <span>QGIS Web Map</span>
+        </div>
+        <div class="card-pad">
+          <p class="eyebrow">Map developed by project team</p>
+          <h3>{externalSystems.interactiveMap.label}</h3>
+          <p>{externalSystems.interactiveMap.description}</p>
+          <div class="map-actions">
+            <a class="button" href={withBase("/interactive-map")}>Open Interactive Map</a>
+            <a class="button secondary" href={externalSystems.interactiveMap.url} target="_blank" rel="noreferrer">
+              Open Original Map
+            </a>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -119,15 +127,48 @@ import { withBase } from "@/utils/paths";
     border-color: var(--color-earth);
   }
 
-  .map-note {
-    margin: 20px 0 12px;
-    color: var(--color-muted);
-    font-weight: 700;
-  }
-
   .system-wrap,
   .card-row {
     margin-top: 28px;
+  }
+
+  .map-gateway {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
+    margin-top: 28px;
+    overflow: hidden;
+  }
+
+  .map-preview {
+    display: grid;
+    min-height: 260px;
+    place-items: center;
+    border-right: 1px solid var(--color-line);
+    background:
+      linear-gradient(90deg, rgba(73, 111, 130, 0.12) 1px, transparent 1px),
+      linear-gradient(0deg, rgba(73, 111, 130, 0.12) 1px, transparent 1px),
+      linear-gradient(135deg, rgba(82, 107, 84, 0.2), rgba(255, 255, 255, 0.28)),
+      #e8eee8;
+    background-size: 38px 38px, 38px 38px, auto, auto;
+    color: var(--color-river);
+    font-weight: 900;
+  }
+
+  .map-gateway h3 {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2.3rem);
+  }
+
+  .map-gateway p:not(.eyebrow) {
+    color: var(--color-muted);
+    line-height: 1.7;
+  }
+
+  .map-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 22px;
   }
 
   .inventory-band,
@@ -147,5 +188,16 @@ import { withBase } from "@/utils/paths";
   .collection-card p {
     color: var(--color-muted);
     line-height: 1.65;
+  }
+
+  @media (max-width: 820px) {
+    .map-gateway {
+      grid-template-columns: 1fr;
+    }
+
+    .map-preview {
+      border-right: 0;
+      border-bottom: 1px solid var(--color-line);
+    }
   }
 </style>

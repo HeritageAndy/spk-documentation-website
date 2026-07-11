@@ -1,0 +1,88 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import { externalSystems } from "@/config/externalSystems";
+---
+
+<BaseLayout title="Interactive Map" description="Interactive QGIS web map for Sambor Prei Kuk digital archives.">
+  <section class="map-page">
+    <div class="map-toolbar">
+      <div>
+        <Breadcrumb items={[{ label: "Digital Archives", href: "/digital-archives" }, { label: "Interactive Map" }]} />
+        <h1>Interactive Map</h1>
+        <p>{externalSystems.interactiveMap.description}</p>
+      </div>
+      <a class="button secondary" href={externalSystems.interactiveMap.url} target="_blank" rel="noreferrer">
+        Open Original Map
+      </a>
+    </div>
+
+    <div class="map-frame-wrap">
+      <iframe
+        title="Sambor Prei Kuk Interactive Map"
+        src={externalSystems.interactiveMap.url}
+        loading="eager"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .map-page {
+    min-height: calc(100vh - 76px);
+    background: #f3f1e9;
+  }
+
+  .map-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: end;
+    border-bottom: 1px solid var(--color-line);
+    background: rgba(255, 255, 255, 0.88);
+    padding: 18px 24px;
+  }
+
+  h1 {
+    margin: 10px 0 4px;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    line-height: 1.08;
+  }
+
+  p {
+    max-width: 780px;
+    margin: 0;
+    color: var(--color-muted);
+    line-height: 1.55;
+  }
+
+  .map-frame-wrap {
+    height: calc(100vh - 205px);
+    min-height: 620px;
+    padding: 12px;
+  }
+
+  iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: white;
+  }
+
+  @media (max-width: 760px) {
+    .map-toolbar {
+      grid-template-columns: 1fr;
+      align-items: start;
+      padding: 16px;
+    }
+
+    .map-frame-wrap {
+      height: calc(100vh - 260px);
+      min-height: 520px;
+      padding: 8px;
+    }
+  }
+</style>

@@ -237,6 +237,14 @@ interactiveMap
 
 以后可接入外部网页、QGIS2web 静态页面、Leaflet 页面或其他团队制作的地图页面。
 
+当前交互地图使用单独页面：
+
+```text
+/interactive-map
+```
+
+Digital Archives 页面只显示入口按钮，地图本体在单独页面中以 iframe 方式嵌入。
+
 ## 如何连接文物检索系统
 
 在 `src/config/externalSystems.ts` 中配置：
