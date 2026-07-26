@@ -65,6 +65,22 @@ import { withBase } from "@/utils/paths";
     </div>
   </section>
 
+  <section class="section cesium-band">
+    <div class="container">
+      <article class="cesium-entry">
+        <div>
+          <p class="eyebrow">Interactive 3D Archive</p>
+          <h2>Explore the Cesium 3D Models</h2>
+          <p>
+            Browse the photogrammetric documentation of Sambor Prei Kuk in its spatial
+            context and open the archive record linked to each monument.
+          </p>
+        </div>
+        <a class="button" href={withBase("/cesium/")}>Open the 3D Viewer</a>
+      </article>
+    </div>
+  </section>
+
   <section class="section members-band">
     <div class="container">
       <article class="members-card card card-pad">
@@ -170,6 +186,49 @@ import { withBase } from "@/utils/paths";
   .members-band {
     border-block: 1px solid var(--color-line);
     background: rgba(255, 255, 255, 0.5);
+  }
+
+  .cesium-band {
+    border-bottom: 1px solid var(--color-line);
+    background: #26312c;
+    color: white;
+  }
+
+  .cesium-entry {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 36px;
+    min-height: 260px;
+    border-left: 2px solid #c0a272;
+    padding: 34px 38px;
+    background:
+      linear-gradient(115deg, rgba(255, 255, 255, 0.055), transparent 60%),
+      #26312c;
+  }
+
+  .cesium-entry .eyebrow,
+  .cesium-entry p {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .cesium-entry h2 {
+    max-width: 780px;
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+  }
+
+  .cesium-entry p:not(.eyebrow) {
+    max-width: 760px;
+    margin-bottom: 0;
+    line-height: 1.75;
+  }
+
+  .cesium-entry .button {
+    border-color: white;
+    background: white;
+    color: var(--color-ink);
+    white-space: nowrap;
   }
 
   .timeline-heading {
@@ -290,6 +349,16 @@ import { withBase } from "@/utils/paths";
 
     .timeline {
       grid-template-columns: repeat(6, 180px);
+    }
+
+    .cesium-entry {
+      grid-template-columns: 1fr;
+      align-items: start;
+      padding: 30px 26px;
+    }
+
+    .cesium-entry .button {
+      justify-self: start;
     }
   }
 </style>

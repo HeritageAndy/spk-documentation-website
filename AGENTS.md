@@ -1,45 +1,30 @@
 # AGENTS.md
 
-本仓库的用户没有编程基础。所有操作说明、最终总结和使用说明请优先使用中文。
+The user who maintains this repository has no programming background. Prefer Chinese for direct operational explanations and final summaries, while keeping all website and repository content in English.
 
-## 工作范围
+## Working boundary
 
-- 旧网站位于父目录 `C:\Users\Herit\Documents\SPK Documentation`。
-- 旧网站仅限读取和分析。
-- 不得修改、移动、删除或提交旧网站中的任何内容。
-- 所有新网站代码、文件修改和 Git 操作只能发生在 `spk-documentation-website` 仓库内。
+- The legacy reference website is in the parent folder `C:\Users\Herit\Documents\SPK Documentation`.
+- The legacy reference website is read-only.
+- Do not modify, move, delete, or commit any legacy-site content.
+- All new website code, file changes, and Git operations must stay inside the `spk-documentation-website` repository.
 
-## 内容原则
+## Content principles
 
-- 不得虚构三博波雷古的历史、年代、建筑研究、考古结论、项目信息、个人信息或机构信息。
-- 未确认内容必须明确标注为 Demo、Placeholder 或 Content pending。
-- 不得擅自开发团队正在制作的 GIS、Cesium、数据库、检索系统、后台、登录、上传或大型三维模型系统。
-- 外部系统只能通过配置文件预留入口、外链或 iframe。
-- 不得在代码中写入访问令牌、密码或隐私数据。
+- Do not invent history, dates, architectural research, archaeological conclusions, project information, personal information, or institutional information about Sambor Prei Kuk.
+- Unconfirmed content must be marked clearly as Demo, Placeholder, or Content pending.
+- Do not independently add unrequested GIS, Cesium, database, search, administration, login, upload, or large-model systems.
+- External systems may be represented only through configuration, external links, or iframes unless the user explicitly authorizes a deeper integration.
+- Never write access tokens, passwords, or private data into source code.
 
-## 技术原则
+## Technical principles
 
-- 优先保持网站简单、稳定、静态化。
-- 内容尽量保存在 `src/data` 或 `src/config`，避免非程序员直接修改复杂组件。
-- 新增功能后必须同步更新中文 README。
-- 修改后必须运行构建检查：`npm run build`。
-- GitHub Pages base 路径不得写死仓库名，应自动根据仓库环境配置。
+- Keep the website simple, stable, and statically deployable.
+- Keep editable content in `src/data` or `src/config` where practical so maintainers do not need to edit complex components.
+- Update the English README whenever functionality changes.
+- Run the build check after changes: `npm.cmd run build`.
+- Never hard-code the GitHub repository name in the Pages base path; derive it from the build environment.
 
-## 第一阶段范围
+## Historical first-stage boundary
 
-只制作 Layout、视觉设计、导航结构、页面框架、占位区域和可复用模板。
-
-不得在第一阶段实现：
-
-- GIS 交互地图
-- QGIS2web 地图
-- CesiumJS 系统
-- Cesium Stories 具体内容
-- 文物数据库
-- 文物检索系统
-- 后端服务器
-- 数据库
-- 用户登录
-- 内容管理后台
-- 在线文件上传
-- 大型三维模型展示系统
+The first stage was limited to layout, visual design, navigation, page frameworks, placeholders, and reusable templates. Later functionality requires explicit user authorization. The current CesiumJS and interactive-map work was explicitly authorized after that first stage.

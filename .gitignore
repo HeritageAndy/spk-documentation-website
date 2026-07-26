@@ -3,3 +3,10 @@ dist/
 .astro/
 .DS_Store
 *.log
+
+# Local environment values and Cesium ion credentials
+.env
+.env.*
+!.env.example
+cesium-token-private*
+spk-CesiumJS/cesium-token-private*
