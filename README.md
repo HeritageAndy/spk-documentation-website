@@ -1,312 +1,288 @@
 # Sambor Prei Kuk Documentation Website
 
-这是三博波雷古寺院遗址数字文档网站的第一阶段框架。
+This repository builds the static Sambor Prei Kuk documentation website. It preserves the existing Home, Story, Project, Digital Archives, article, and monument-detail routes and adds an independent CesiumJS 3D archive at:
 
-本阶段只包含网站 Layout、页面结构、导航、占位区域和数据模板。GIS 地图、Cesium Stories、文物数据库、检索系统、三维模型平台和后台系统尚未接入。
+```text
+/cesium/
+```
 
-## 如何本地预览
+The expected GitHub Pages address is:
 
-1. 打开终端，进入新网站文件夹：
+```text
+https://heritageandy.github.io/spk-documentation-website/cesium/
+```
 
-   ```powershell
-   cd "C:\Users\Herit\Documents\SPK Documentation\spk-documentation-website"
-   ```
+The viewer loads all photogrammetric models listed in the Excel inventory, uses Bing Maps Aerial as its base imagery, uses Cesium World Terrain, and provides three optional layers named **Terrain Data**, **UAV Aerial Point Cloud Data**, and **SLAM LiDAR Ground Point Cloud Data**. Visitors can click a photogrammetric model to highlight the complete model, read its live Cesium ion Name and Description, and open the linked monument record.
 
-2. 第一次使用时安装依赖：
+## 1. Basic terms
 
-   ```powershell
-   npm install
-   ```
+- **Cesium ion** is the online service that stores and publishes the project's spatial assets.
+- **CesiumJS** is the npm package that displays those assets in a web browser. This project does not use a CDN.
+- **Asset ID** is the numeric identifier assigned to an asset by Cesium ion.
+- **Token** is the credential used by the public page to read selected ion assets. A Vite token becomes visible in the browser, so it must have the minimum possible permissions.
 
-3. 启动本地预览：
+## 2. Main files and folders
 
-   ```powershell
-   npm run dev
-   ```
+```text
+SPK Documentation/
+|-- spk-CesiumJS/
+|   |-- SPK_Cesium_Asset_List.xlsx       Source model inventory
+|   `-- cesium-token-private.txt.txt      Private source token document; never commit
+`-- spk-documentation-website/            Git repository
+    |-- .github/workflows/deploy.yml      GitHub Pages workflow
+    |-- .env.example                      Safe token placeholder
+    |-- .env.local                        Local token; ignored by Git
+    |-- scripts/
+    |   |-- sync-assets.mjs               Converts Excel to JSON
+    |   `-- sync-metadata.mjs             Refreshes the local metadata fallback
+    |-- public/cesium/data/
+    |   |-- assets.json                   Generated model inventory
+    |   |-- layers.json                   Base map and optional layer configuration
+    |   `-- metadata.json                 Generated Name and Description fallback
+    |-- src/pages/cesium/index.astro      Cesium page structure
+    |-- src/scripts/cesium-viewer.js      Cesium loading and interaction logic
+    |-- src/styles/cesium.css             Cesium page design
+    |-- DEVELOPMENT_LOG.md                Development and test record
+    `-- README.md                         This guide
+```
 
-4. 浏览器打开终端显示的本地地址，通常是 `http://localhost:4321`。
+Do not edit generated folders such as `node_modules`, `dist`, or `.astro`.
 
-## 构建检查
+## 3. First installation
 
-修改后请运行：
+Open PowerShell. The next command may be run from any location. It enters the real website repository.
 
 ```powershell
-npm run build
+cd "C:\Users\Herit\Documents\SPK Documentation\spk-documentation-website"
 ```
 
-如果命令报错，先修复错误，再提交 GitHub。
+Run the next command from `spk-documentation-website`. It installs Astro, CesiumJS, and the inventory conversion tools.
 
-## 目录结构
+```powershell
+npm.cmd install
+```
 
-- `src/pages`：网站页面模板。
-- `src/layouts`：全局页面布局。
-- `src/components`：Header、Footer、卡片、占位框等可复用组件。
-- `src/data`：项目、遗迹、专题、论文报告、首页内容等可编辑数据。
-- `src/config`：网站基本信息、导航、外部系统链接配置。
-- `src/styles`：全局样式。
-- `public/images`：以后放普通网页图片。
-- `public/thumbnails`：以后放缩略图。
-- `public/documents`：以后放公开文档或 PDF。
-- `.github/workflows/deploy.yml`：GitHub Pages 自动部署配置。
+`npm.cmd` is used because some Windows systems block the `npm.ps1` script.
 
-## 如何修改首页文字
+## 4. Start and stop the local website
 
-首页页面在：
+Run this command from `spk-documentation-website`. The terminal will remain busy while the local server is running.
+
+```powershell
+npm.cmd run dev
+```
+
+Open the Home page at:
 
 ```text
-src/pages/index.astro
+http://localhost:4321/
 ```
 
-首页 Featured Content 和 Latest Articles / Reports 的示例记录在：
+Open the Cesium page directly at:
 
 ```text
-src/data/home.ts
+http://localhost:4321/cesium/
 ```
 
-请把 Demo / Placeholder 内容替换为已经确认的正式文字。不要填写未经确认的历史、年代、研究结论或个人信息。
+To stop the server, return to its PowerShell window and press `Ctrl + C`. If Windows asks whether to terminate the job, type `Y` and press Enter.
 
-## 如何替换图片
+## 5. Edit the model inventory
 
-1. 把图片放入 `public/images` 或 `public/thumbnails`。
-2. 在对应数据文件中填写图片路径，例如：
-
-   ```text
-   /images/example.jpg
-   ```
-
-3. 所有图片都必须有清楚的 alt 文本。当前第一阶段主要使用占位框。
-
-不要上传大型原始数据，例如 OBJ、PLY、LAS、E57、原始高清照片或大量照片集。
-
-## 如何增加项目
-
-编辑：
+The source inventory is:
 
 ```text
-src/data/projects.ts
+C:\Users\Herit\Documents\SPK Documentation\spk-CesiumJS\SPK_Cesium_Asset_List.xlsx
 ```
 
-当前 Project 页面中的英文参考内容和图片整理自 Shimoda Laboratory 的 SPK Project 页面。继续修改时，请优先编辑 `projectPageSections`，并保留或更新对应来源链接。
+The first row must contain `asset_id` and `asset_name`. Capitalization does not matter. Each later row represents one complete photogrammetric 3D Tiles model.
 
-每个项目支持：
+- Put the numeric Cesium ion Asset ID in `asset_id`.
+- Put a recognizable model name in `asset_name`.
+- Do not copy Description text into Excel.
+- Do not repeat an Asset ID.
+- Save and close Excel before synchronizing.
 
-- `title`
-- `period`
-- `summary`
-- `thumbnail`
-- `participatingOrganizations`
-- `relatedOutputs`
-- `externalLink`
-- `category`
+Run this command from `spk-documentation-website`. It rebuilds `public/cesium/data/assets.json`; the browser never reads Excel directly.
 
-`category` 只能使用：
+```powershell
+npm.cmd run sync-assets
+```
 
-- `Research`
-- `Conservation`
-- `Human Resource Development`
+## 6. Refresh Name and Description
 
-## 如何增加遗迹
+Edit each model's Name and Description directly in Cesium ion. The Description may include plain text, Markdown headings, Markdown links, and complete `http` or `https` URLs. The page reads current metadata by Asset ID whenever it opens and safely renders supported text and links without executing HTML.
 
-编辑：
+Run this command from `spk-documentation-website` to refresh the local fallback file.
+
+```powershell
+npm.cmd run sync-metadata
+```
+
+The command updates `public/cesium/data/metadata.json`. If one asset fails, the remaining assets continue to synchronize.
+
+## 7. Add a new photogrammetric model
+
+1. Upload and position the model in Cesium ion.
+2. Complete its Name and Description and add the existing monument-detail link.
+3. Add its Asset ID and Asset Name to the end of the Excel inventory.
+4. Add the asset to the public token's selected assets when restrictions are enabled.
+5. Save and close Excel.
+6. Run the following three commands from `spk-documentation-website`.
+
+The first command updates the browser inventory.
+
+```powershell
+npm.cmd run sync-assets
+```
+
+The second command updates the local metadata fallback.
+
+```powershell
+npm.cmd run sync-metadata
+```
+
+The third command verifies the complete static website.
+
+```powershell
+npm.cmd run build
+```
+
+## 8. Delete a photogrammetric model from the page
+
+Delete the model's row from Excel, save the workbook, and run `sync-assets`, `sync-metadata`, and `build` again. This removes the model from the website inventory but does not delete the source asset from Cesium ion.
+
+## 9. Configure base and optional layers
+
+Layer Asset IDs and labels are maintained in `public/cesium/data/layers.json`.
+
+- Asset `2`, **Bing Maps Aerial**, is always enabled as base imagery.
+- Asset `1`, **Cesium World Terrain**, is always enabled as the terrain provider.
+- Asset `5015776`, source name **SPK_Qgis_600_2**, is an ion imagery asset shown to visitors as **Terrain Data**.
+- Asset `4558719`, source name **Pr.Sambor_Plan_new**, is a 3D Tiles point-cloud asset shown as **UAV Aerial Point Cloud Data**.
+- Asset `5079833`, source name **SPK_Ground_SLAM_2025**, is a 3D Tiles point-cloud asset shown as **SLAM LiDAR Ground Point Cloud Data**.
+
+The **Layers** control appears in the lower-left corner of the viewer. All three optional layers start turned off to reduce the initial load on the visitor's device. A layer loads the first time its checkbox is selected. These point-cloud layers are contextual data only: clicking them does not open a building information panel. If an Asset ID changes, edit only `layers.json`, then rebuild the site.
+
+Clicking a photogrammetric building model applies a light orange-yellow style to the complete tileset while keeping the original texture visible. Selecting another model, closing the information panel, pressing Escape, or clicking empty terrain restores the previous model's exact original style. This is a temporary browser effect and never changes the Cesium ion asset.
+
+## 10. Update the local token
+
+The local token is stored in:
 
 ```text
-src/data/monuments.ts
+spk-documentation-website/.env.local
 ```
 
-每条遗迹记录支持：
+Use this format and replace only the placeholder after the equals sign:
 
-- `id`
-- `name`
-- `zone`
-- `thumbnail`
-- `shortDescription`
-- `tags`
-
-网站会自动为每条记录生成详情页：
-
-```text
-/digital-archives/sites/遗迹id
+```dotenv
+VITE_CESIUM_ION_TOKEN=your_restricted_public_token_here
 ```
 
-不要为每座遗迹手写一整套页面。未来真实内容应优先通过数据文件维护。
+Do not add quotes or spaces. `.env.example` must contain only a placeholder. Stop and restart the local server after changing `.env.local`.
 
-## 如何增加专题集合
+The source token document must never be copied into the repository. Git history can preserve a secret even after a later deletion.
 
-编辑：
+For the public website, create a dedicated Cesium ion token with:
 
-```text
-src/data/collections.ts
+- `assets:read` only; do not enable `assets:list`, `assets:write`, or account-management access.
+- Access limited to the 16 photogrammetric models, Bing Maps Aerial, Cesium World Terrain, SPK_Qgis_600_2, Pr.Sambor_Plan_new, and SPK_Ground_SLAM_2025.
+- Allowed URL `https://heritageandy.github.io/spk-documentation-website/`.
+- Optional local Allowed URL `http://localhost:4321/` while testing.
+
+## 11. Rebuild the website
+
+Run this command from `spk-documentation-website`. It checks the code and rebuilds the complete static site in `dist`; it does not publish anything.
+
+```powershell
+npm.cmd run build
 ```
 
-每个专题入口可以先指向内部页面。未来如果团队完成了外部检索系统，可以在 `src/config/externalSystems.ts` 中配置外部链接或 iframe。
+To inspect the built output locally, run this command from the same folder.
 
-当前专题包括：
-
-- Movable Object Inventory
-- Inscriptions
-- Flying Palace
-- Old Photographs
-
-## 如何增加论文和报告
-
-编辑：
-
-```text
-src/data/articles.ts
+```powershell
+npm.cmd run preview
 ```
 
-成果记录支持：
+Use the address printed in PowerShell. Press `Ctrl + C` when finished.
 
-- `title`
-- `authors`
-- `year`
-- `category`
-- `citation`
-- `summary`
-- `thumbnail`
-- `pdfUrl`
-- `externalUrl`
+## 12. Deploy to the existing GitHub Pages website
 
-分类包括：
+The repository already contains `.github/workflows/deploy.yml`. When reviewed code reaches `main`, GitHub Actions installs dependencies, builds `dist`, and deploys it to Pages. Local work does not publish automatically.
 
-- Published Articles
-- Reports
-- Presentations
-- Books / Chapters
-- Media / News
+Before deployment, add the restricted production token on GitHub:
 
-## 如何填写 Cesium Story 链接
+1. Open the repository **Settings**.
+2. Open **Secrets and variables**, then **Actions**.
+3. Select **New repository secret**.
+4. Use the name `VITE_CESIUM_ION_TOKEN`.
+5. Paste the restricted public token as the secret value.
+6. Save it before running the Pages workflow.
 
-编辑：
+Astro automatically applies the repository prefix in GitHub Actions. Keep the source route as `/cesium/`; do not hard-code `/spk-documentation-website/` in page code.
 
-```text
-src/config/externalSystems.ts
-```
+## 13. Common problems
 
-找到：
+### PowerShell blocks npm.ps1
 
-```ts
-cesiumStory: {
-  mode: "disabled",
-  url: "",
-}
-```
+Use `npm.cmd` as shown in this guide. Do not weaken the Windows security policy.
 
-如果还没有完成，保持：
+### The page says the token is not configured
 
-```ts
-mode: "disabled"
-url: ""
-```
+Confirm that `.env.local` exists, the variable is named exactly `VITE_CESIUM_ION_TOKEN`, and a value follows the equals sign. Restart the development server.
 
-如果要打开外部网页：
+### An asset returns 401 or Invalid access token
 
-```ts
-mode: "external-link"
-url: "https://example.com"
-```
+The token is invalid, revoked, or missing `assets:read`. Replace it with a valid restricted public token.
 
-如果要嵌入 iframe：
+### An asset returns 403
 
-```ts
-mode: "iframe"
-url: "https://example.com"
-```
+The current page may be absent from Allowed URLs, or the Asset ID may be absent from selected assets. Correct the token restrictions and refresh the page.
 
-不要把 Cesium ion Token、密码或隐私数据写入代码。
+### An asset returns 404
 
-## 如何填写交互地图链接
+The Asset ID may be incorrect or deleted. Check Excel or `layers.json` against Cesium ion. One model failure does not stop the other models.
 
-仍然编辑：
+### The base map does not appear
 
-```text
-src/config/externalSystems.ts
-```
+Confirm that the token can read assets `1` and `2` and that the current URL is allowed. The viewer treats Bing Maps Aerial as required and reports an error instead of opening an empty globe.
 
-找到：
+### An optional layer does not appear
 
-```ts
-interactiveMap
-```
+Check the browser console for its Asset ID and source name. Confirm that asset `5015776` is an imagery asset and assets `4558719` and `5079833` are complete 3D Tiles assets accessible to the token.
 
-支持三种状态：
+### Excel synchronization cannot find the columns
 
-- `disabled`：未完成，页面显示 Under preparation。
-- `external-link`：按钮跳转外部网页。
-- `iframe`：在页面内嵌入外部网页。
+Confirm that the first row contains `asset_id` and `asset_name` without extra spaces. Capitalization may differ.
 
-以后可接入外部网页、QGIS2web 静态页面、Leaflet 页面或其他团队制作的地图页面。
+### The model page opens but no models appear
 
-当前交互地图使用单独页面：
+Wait for loading to finish, check the failed Asset ID and name in the browser console, and confirm that each model is COMPLETE, is 3D Tiles, and remains spatially positioned in Cesium ion.
 
-```text
-/interactive-map
-```
+### A Description link does not appear
 
-Digital Archives 页面只显示入口按钮，地图本体在单独页面中以 iframe 方式嵌入。
+Use a complete `http://` or `https://` URL. A Markdown link must follow `[Link text](https://complete-address.example)`.
 
-## 如何连接文物检索系统
+### GitHub Pages shows a blank page or static-resource 404
 
-在 `src/config/externalSystems.ts` 中配置：
+Confirm that the repository workflow is used, the GitHub secret is named exactly `VITE_CESIUM_ION_TOKEN`, and Astro's automatic `base` configuration has not been replaced.
 
-- `monumentDatabase`
-- `movableObjectDatabase`
+## 14. Files that must not be committed
 
-本网站第一阶段不开发文物检索系统，只保留入口。
+Never commit:
 
-## 如何嵌入外部页面
+- `.env.local`;
+- the source token document or any file, screenshot, or log containing a complete token;
+- a token with `assets:list`, `assets:write`, or other private permissions;
+- `node_modules`, `dist`, or `.astro`;
+- source photogrammetry, TLS, OBJ, PLY, LAS, E57, or photo datasets.
 
-把对应外部系统的 `mode` 改为：
+The generated `assets.json`, `metadata.json`, `layers.json`, source pages, scripts, styles, README, development log, and workflow configuration may be committed after review.
 
-```ts
-mode: "iframe"
-```
-
-并填写 `url`。
-
-如果外部网站禁止 iframe 嵌入，请改用：
-
-```ts
-mode: "external-link"
-```
-
-## 如何提交 GitHub 修改
-
-进入新网站仓库后：
+Run this command from `spk-documentation-website` before committing. It only reports file status and does not upload anything.
 
 ```powershell
 git status
-git add .
-git commit -m "Describe your change"
-git push origin 分支名
 ```
 
-不要在 `main` 分支直接开发。建议先创建新分支。
-
-## 如何部署 GitHub Pages
-
-本仓库已经包含 GitHub Actions 配置：
-
-```text
-.github/workflows/deploy.yml
-```
-
-推送到 `main` 后，GitHub Actions 会构建并部署到 GitHub Pages。当前任务不会自动合并到 `main`。
-
-Astro 的 GitHub Pages base 路径会根据仓库名称自动设置，不需要手动写死仓库名。
-
-## 绝对不要修改的内容
-
-当前父目录中的旧网站只用于参考：
-
-```text
-C:\Users\Herit\Documents\SPK Documentation
-```
-
-不要修改、移动、删除或提交旧网站中的任何文件。所有新网站修改只能发生在：
-
-```text
-C:\Users\Herit\Documents\SPK Documentation\spk-documentation-website
-```
-
-也不要修改或提交旧网站的 `.next`、`node_modules`、`tsconfig.tsbuildinfo`。
+Confirm that neither `.env.local` nor a token document appears in the list.
