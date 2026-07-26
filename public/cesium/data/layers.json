@@ -1,0 +1,33 @@
+{
+  "baseImagery": {
+    "assetId": 2,
+    "assetName": "Bing Maps Aerial"
+  },
+  "worldTerrain": {
+    "assetId": 1,
+    "assetName": "Cesium World Terrain"
+  },
+  "optionalLayers": [
+    {
+      "key": "terrain-data",
+      "assetId": 5015776,
+      "assetName": "SPK_Qgis_600_2",
+      "label": "Terrain Data",
+      "type": "imagery"
+    },
+    {
+      "key": "uav-aerial-point-cloud-data",
+      "assetId": 4558719,
+      "assetName": "Pr.Sambor_Plan_new",
+      "label": "UAV Aerial Point Cloud Data",
+      "type": "tileset"
+    },
+    {
+      "key": "slam-lidar-ground-point-cloud-data",
+      "assetId": 5079833,
+      "assetName": "SPK_Ground_SLAM_2025",
+      "label": "SLAM LiDAR Ground Point Cloud Data",
+      "type": "tileset"
+    }
+  ]
+}

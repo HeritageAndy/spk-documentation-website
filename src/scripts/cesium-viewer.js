@@ -18,8 +18,9 @@ const app = document.querySelector("#cesium-app");
 const status = document.querySelector("#loading-status");
 const statusText = document.querySelector("#loading-status-text");
 const layerStatus = document.querySelector("#layer-status");
-const terrainDataToggle = document.querySelector("#terrain-data-toggle");
-const pointCloudDataToggle = document.querySelector("#point-cloud-data-toggle");
+const optionalLayerInputs = Array.from(
+  document.querySelectorAll(".layer-toggle input[data-layer-key]")
+);
 const panel = document.querySelector("#model-panel");
 const panelClose = document.querySelector("#panel-close");
 const modelName = document.querySelector("#model-name");
@@ -259,11 +260,6 @@ function connectOptionalLayers(viewer, layerConfig) {
   const definitions = new Map(layers.map((layer) => [layer.key, layer]));
   const loaded = new Map();
 
-  const controls = [
-    { key: "terrain-data", input: terrainDataToggle },
-    { key: "point-cloud-data", input: pointCloudDataToggle }
-  ];
-
   async function loadLayer(definition) {
     if (definition.type === "imagery") {
       const provider = await IonImageryProvider.fromAssetId(definition.assetId);
@@ -284,7 +280,8 @@ function connectOptionalLayers(viewer, layerConfig) {
     throw new Error(`Unsupported optional layer type: ${definition.type}`);
   }
 
-  for (const { key, input } of controls) {
+  for (const input of optionalLayerInputs) {
+    const key = input.dataset.layerKey;
     const definition = definitions.get(key);
 
     if (!definition || !input) {
@@ -333,8 +330,7 @@ async function initialize() {
     !status ||
     !statusText ||
     !layerStatus ||
-    !terrainDataToggle ||
-    !pointCloudDataToggle ||
+    !optionalLayerInputs.length ||
     !panel ||
     !panelClose ||
     !modelName ||

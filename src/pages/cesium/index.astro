@@ -1,0 +1,89 @@
+---
+import "cesium/Build/Cesium/Widgets/widgets.css";
+import "@/styles/cesium.css";
+
+const rawBaseUrl = import.meta.env.BASE_URL;
+const baseUrl = rawBaseUrl.endsWith("/") ? rawBaseUrl : `${rawBaseUrl}/`;
+const cesiumBaseUrl = `${baseUrl}cesium-static/`;
+const cesiumToken = import.meta.env.VITE_CESIUM_ION_TOKEN || "";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Interactive photogrammetric 3D model archive for Sambor Prei Kuk."
+    />
+    <title>3D Model Archive | Sambor Prei Kuk Documentation</title>
+  </head>
+  <body>
+    <main id="cesium-app" data-base-url={baseUrl}>
+      <div id="cesium-container" aria-label="Sambor Prei Kuk 3D model viewer"></div>
+
+      <header class="viewer-heading">
+        <p>Digital Heritage Archive</p>
+        <h1>Sambor Prei Kuk 3D Archive</h1>
+      </header>
+
+      <div id="loading-status" class="loading-status" role="status" aria-live="polite">
+        <span class="loading-indicator" aria-hidden="true"></span>
+        <span id="loading-status-text">Preparing the 3D scene…</span>
+      </div>
+
+      <aside class="layer-control" aria-label="Layer controls">
+        <h2>Layers</h2>
+        <label class="layer-toggle" for="terrain-data-toggle">
+          <input id="terrain-data-toggle" type="checkbox" data-layer-key="terrain-data" />
+          <span>Terrain Data</span>
+        </label>
+        <label class="layer-toggle" for="uav-aerial-point-cloud-data-toggle">
+          <input
+            id="uav-aerial-point-cloud-data-toggle"
+            type="checkbox"
+            data-layer-key="uav-aerial-point-cloud-data"
+          />
+          <span>UAV Aerial Point Cloud Data</span>
+        </label>
+        <label class="layer-toggle" for="slam-lidar-ground-point-cloud-data-toggle">
+          <input
+            id="slam-lidar-ground-point-cloud-data-toggle"
+            type="checkbox"
+            data-layer-key="slam-lidar-ground-point-cloud-data"
+          />
+          <span>SLAM LiDAR Ground Point Cloud Data</span>
+        </label>
+        <p id="layer-status" class="visually-hidden" role="status" aria-live="polite"></p>
+      </aside>
+
+      <aside
+        id="model-panel"
+        class="model-panel"
+        aria-label="Selected 3D model information"
+        aria-hidden="true"
+        inert
+      >
+        <button id="panel-close" class="panel-close" type="button" aria-label="Close model information">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <p class="panel-eyebrow">Cesium ion Asset</p>
+        <h2 id="model-name">Model name</h2>
+        <div id="model-description" class="model-description"></div>
+      </aside>
+
+      <noscript>
+        <p class="fatal-message">JavaScript is required to display the 3D models.</p>
+      </noscript>
+    </main>
+
+    <script is:inline define:vars={{ cesiumBaseUrl, cesiumToken }}>
+      window.CESIUM_BASE_URL = cesiumBaseUrl;
+      window.__SPK_CESIUM_CONFIG__ = Object.freeze({ token: cesiumToken });
+    </script>
+    <script>
+      import "@/scripts/cesium-viewer.js";
+    </script>
+  </body>
+</html>

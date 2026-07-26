@@ -1,0 +1,413 @@
+:root {
+  color-scheme: dark;
+  font-family:
+    Inter, "Segoe UI", system-ui, sans-serif;
+  background: #111a1c;
+  color: #f5f2e9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#cesium-app,
+#cesium-container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  min-width: 320px;
+}
+
+#cesium-app {
+  position: relative;
+  isolation: isolate;
+}
+
+#cesium-container,
+#cesium-container .cesium-widget,
+#cesium-container canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.viewer-heading {
+  position: absolute;
+  z-index: 2;
+  top: max(20px, env(safe-area-inset-top));
+  left: max(22px, env(safe-area-inset-left));
+  max-width: min(620px, calc(100vw - 44px));
+  border-left: 2px solid #c0a272;
+  padding: 7px 16px 8px;
+  pointer-events: none;
+  text-shadow: 0 2px 14px rgb(0 0 0 / 80%);
+}
+
+.viewer-heading p,
+.panel-eyebrow {
+  margin: 0 0 5px;
+  color: #d9c49e;
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.viewer-heading h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.12rem, 2.3vw, 1.65rem);
+  font-weight: 500;
+  letter-spacing: 0.015em;
+}
+
+.loading-status {
+  position: absolute;
+  z-index: 2;
+  top: max(104px, calc(env(safe-area-inset-top) + 104px));
+  left: max(22px, env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  max-width: min(430px, calc(100vw - 44px));
+  border: 1px solid rgb(217 196 158 / 28%);
+  border-radius: 999px;
+  background: rgb(17 26 28 / 82%);
+  padding: 9px 14px;
+  color: #eee9dc;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  box-shadow: 0 12px 36px rgb(0 0 0 / 28%);
+  backdrop-filter: blur(10px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.loading-status.is-hidden {
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+}
+
+.loading-indicator {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #d1b47d;
+  box-shadow: 0 0 0 0 rgb(209 180 125 / 60%);
+  animation: loading-pulse 1.6s infinite;
+}
+
+.loading-status[data-state="ready"] .loading-indicator {
+  background: #8ab39a;
+  animation: none;
+}
+
+.loading-status[data-state="warning"] .loading-indicator {
+  background: #d3a568;
+  animation: none;
+}
+
+.loading-status[data-state="error"] {
+  border-color: rgb(213 119 105 / 45%);
+}
+
+.loading-status[data-state="error"] .loading-indicator {
+  background: #d57769;
+  animation: none;
+}
+
+@keyframes loading-pulse {
+  70% {
+    box-shadow: 0 0 0 8px rgb(209 180 125 / 0%);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(209 180 125 / 0%);
+  }
+}
+
+.layer-control {
+  position: absolute;
+  z-index: 4;
+  top: auto;
+  right: auto;
+  bottom: max(42px, calc(env(safe-area-inset-bottom) + 42px));
+  left: max(22px, env(safe-area-inset-left));
+  width: min(340px, calc(100vw - 44px));
+  border: 1px solid rgb(217 196 158 / 30%);
+  border-radius: 12px;
+  background: rgb(17 26 28 / 88%);
+  padding: 16px 18px 14px;
+  box-shadow: 0 14px 42px rgb(0 0 0 / 32%);
+  backdrop-filter: blur(12px);
+}
+
+.layer-control h2 {
+  margin: 0 0 11px;
+  border-bottom: 1px solid rgb(217 196 158 / 22%);
+  padding-bottom: 10px;
+  color: #f5f2e9;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.layer-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  color: #eee9dc;
+  cursor: pointer;
+  font-size: 0.86rem;
+  line-height: 1.3;
+}
+
+.layer-toggle input {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  margin: 0;
+  accent-color: #c0a272;
+  cursor: pointer;
+}
+
+.layer-toggle:has(input:focus-visible) {
+  outline: 1px solid #d9c49e;
+  outline-offset: 3px;
+}
+
+.layer-toggle:has(input:disabled) {
+  cursor: wait;
+  opacity: 0.64;
+}
+
+.layer-toggle input:disabled {
+  cursor: wait;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.model-panel {
+  position: absolute;
+  z-index: 5;
+  inset: 0 0 0 auto;
+  width: min(410px, calc(100vw - 40px));
+  overflow-y: auto;
+  border-left: 1px solid rgb(217 196 158 / 24%);
+  background: rgb(245 241 230 / 96%);
+  padding:
+    max(76px, calc(env(safe-area-inset-top) + 54px))
+    max(34px, calc(env(safe-area-inset-right) + 28px))
+    max(38px, env(safe-area-inset-bottom))
+    34px;
+  color: #222927;
+  box-shadow: -20px 0 60px rgb(0 0 0 / 36%);
+  transform: translateX(105%);
+  transition: transform 240ms ease;
+  visibility: hidden;
+}
+
+.model-panel.is-open {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.panel-close {
+  position: absolute;
+  top: max(18px, env(safe-area-inset-top));
+  right: max(18px, env(safe-area-inset-right));
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid rgb(42 53 50 / 22%);
+  border-radius: 50%;
+  background: transparent;
+  color: #26302d;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.panel-close:hover,
+.panel-close:focus-visible {
+  border-color: #8b6948;
+  background: rgb(139 105 72 / 8%);
+  outline: none;
+}
+
+.panel-eyebrow {
+  color: #826141;
+}
+
+.model-panel h2 {
+  margin: 0;
+  padding-bottom: 23px;
+  border-bottom: 1px solid rgb(49 60 57 / 18%);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.65rem, 5vw, 2.35rem);
+  font-weight: 500;
+  line-height: 1.13;
+  overflow-wrap: anywhere;
+}
+
+.model-description {
+  padding-top: 20px;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.model-description h3 {
+  margin: 20px 0 4px;
+  color: #343c39;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.model-description h3:first-child {
+  margin-top: 0;
+}
+
+.model-description p,
+.model-description ul {
+  margin: 6px 0 15px;
+}
+
+.model-description ul {
+  padding-left: 20px;
+}
+
+.model-description a {
+  color: #6f4c2f;
+  font-weight: 750;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.model-description a:hover,
+.model-description a:focus-visible {
+  color: #3d2a1b;
+}
+
+.description-empty {
+  color: #65706c;
+}
+
+.fatal-message {
+  position: absolute;
+  z-index: 10;
+  inset: 50% auto auto 50%;
+  width: min(420px, calc(100vw - 40px));
+  margin: 0;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgb(255 255 255 / 20%);
+  background: #182224;
+  padding: 20px;
+  text-align: center;
+}
+
+#cesium-container .cesium-widget-credits {
+  right: 8px;
+  bottom: 6px;
+  font-size: 10px;
+}
+
+@media (max-width: 680px) {
+  .viewer-heading {
+    top: max(14px, env(safe-area-inset-top));
+    left: max(14px, env(safe-area-inset-left));
+    max-width: min(180px, calc(100vw - 198px));
+    padding-left: 12px;
+  }
+
+  .loading-status {
+    top: max(104px, calc(env(safe-area-inset-top) + 104px));
+    left: max(14px, env(safe-area-inset-left));
+    max-width: calc(100vw - 28px);
+    font-size: 0.75rem;
+  }
+
+  .layer-control {
+    top: auto;
+    right: auto;
+    bottom: max(40px, calc(env(safe-area-inset-bottom) + 40px));
+    left: max(14px, env(safe-area-inset-left));
+    width: min(342px, calc(100vw - 28px));
+    min-width: 0;
+    padding: 12px 14px 10px;
+  }
+
+  .layer-control h2 {
+    margin-bottom: 6px;
+    padding-bottom: 7px;
+    font-size: 0.96rem;
+  }
+
+  .layer-toggle {
+    min-height: 31px;
+    gap: 8px;
+    font-size: 0.75rem;
+  }
+
+  .model-panel {
+    inset: auto 0 0;
+    width: 100%;
+    max-height: min(70dvh, 620px);
+    border-top: 1px solid rgb(217 196 158 / 24%);
+    border-left: 0;
+    border-radius: 18px 18px 0 0;
+    padding:
+      58px
+      max(24px, env(safe-area-inset-right))
+      max(26px, calc(env(safe-area-inset-bottom) + 18px))
+      max(24px, env(safe-area-inset-left));
+    transform: translateY(105%);
+  }
+
+  .model-panel.is-open {
+    transform: translateY(0);
+  }
+
+  .panel-close {
+    top: 12px;
+    right: max(14px, env(safe-area-inset-right));
+    width: 38px;
+    height: 38px;
+  }
+
+  .model-panel h2 {
+    font-size: 1.55rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .model-panel,
+  .loading-status {
+    transition: none;
+  }
+
+  .loading-indicator {
+    animation: none;
+  }
+}
